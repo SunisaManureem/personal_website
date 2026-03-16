@@ -522,6 +522,16 @@ opacity:0;
     resize: vertical;
     min-height: 120px;
 }
+/* ===== Footer ===== */
+.footer {
+    background: var(--primary-dark);
+    padding: 30px 0;
+    text-align: center;
+}
+
+.footer p {
+    color: var(--surface);
+}
 
 body{
 margin:0;
