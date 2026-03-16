@@ -61,6 +61,13 @@ img {
     height: auto;
     display: block;
 }
+/* ===== Utility Classes ===== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
 body{
 margin:0;
