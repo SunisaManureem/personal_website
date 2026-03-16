@@ -1103,6 +1103,115 @@ color:#94a3b8;
 .delay-3 { animation-delay: 0.6s; opacity: 0; }
 
 
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        flex-direction: column;
+        padding: 20px;
+        gap: 8px;
+        transform: translateY(-150%);
+        opacity: 0;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+    }
+
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding-top: 120px;
+        gap: 40px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-image {
+        flex: none;
+    }
+
+    .hero-image img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-sidebar {
+        order: 2;
+    }
+
+    .cv-timeline-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .quiz-container {
+        padding: 24px;
+    }
+}
+
+@media print {
+    .navbar,
+    .footer,
+    .btn {
+        display: none !important;
+    }
+
+    .cv-page {
+        padding: 0;
+    }
+
+    .cv-grid {
+        grid-template-columns: 250px 1fr;
+    }
+
+    .cv-sidebar,
+    .cv-main .cv-section {
+        box-shadow: none;
+        border: 1px solid var(--border);
+    }
+}
 /* ===== Tech Stack ===== */
 
 .tech{
