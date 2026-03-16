@@ -296,7 +296,52 @@ box-shadow:var(--shadow);
 animation:fadeInUp .8s ease forwards;
 opacity:0;
 }
+/* ===== About Section ===== */
+.about {
+    background: var(--surface);
+}
 
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.about-text p {
+    margin-bottom: 16px;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+}
+
+.about-info {
+    background: var(--background);
+    padding: 30px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.info-item {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    min-width: 100px;
+    color: var(--text);
+}
+
+.info-value {
+    color: var(--primary);
+    font-weight: 600;
+}
 
 body{
 margin:0;
