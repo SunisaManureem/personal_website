@@ -68,6 +68,23 @@ img {
     margin: 0 auto;
     padding: 0 20px;
 }
+.hidden {
+    display: none !important;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
 
 body{
 margin:0;
