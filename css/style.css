@@ -763,22 +763,6 @@ box-shadow:var(--shadow);
     font-size: 0.75rem;
     font-weight: 600;
 }
-
-
-body{
-margin:0;
-font-family:sans-serif;
-}
-.navbar{
-position:fixed;
-top:0;
-width:100%;
-}
-.hero{
-min-height:100vh;
-display:flex;
-align-items:center;
-}
 @keyframes fadeInUp{
 from{
 opacity:0;
