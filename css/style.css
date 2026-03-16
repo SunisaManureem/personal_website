@@ -324,6 +324,7 @@ background: linear-gradient(
     align-items:center;
     justify-content:space-between;
     gap:100px;
+    
 }
 /* สไตล์กล่อง Badge ที่เพิ่มเข้ามาใหม่ */
 .hero-badge {
