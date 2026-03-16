@@ -296,6 +296,30 @@ box-shadow:var(--shadow);
 animation:fadeInUp .8s ease forwards;
 opacity:0;
 }
+.hero-socials{
+margin-top:2rem;
+display:flex;
+gap:14px;
+}
+.hero-socials a{
+display:flex;
+align-items:center;
+justify-content:center;
+width:42px;
+height:42px;
+border-radius:50%;
+background:var(--surface);
+border:1px solid var(--border);
+color:var(--text-secondary);
+transition:all .3s ease;
+}
+
+.hero-socials a:hover{
+background:var(--primary);
+color:white;
+transform:translateY(-3px);
+box-shadow:var(--shadow);
+}
 /* ===== About Section ===== */
 .about {
     background: var(--surface);
