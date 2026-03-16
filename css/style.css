@@ -1212,6 +1212,78 @@ color:#94a3b8;
         border: 1px solid var(--border);
     }
 }
+
+/* ===== Hero Decor Elements (ลายน้ำ & ป้ายลอยตัว) ===== */
+
+.hero-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16vw;            
+    font-weight: 900;
+    color: var(--primary);
+    opacity: 0.03;              
+    z-index: -1;
+    white-space: nowrap;
+    pointer-events: none;       
+    user-select: none;
+    letter-spacing: 5px;
+}
+
+[data-theme="dark"] .hero-watermark {
+    color: var(--surface);
+    opacity: 0.05;
+}
+
+.floating-badge {
+    position: absolute;
+    background: var(--surface);
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary);
+    border: 1px solid var(--border);
+    z-index: 2;
+    animation: float-anim 4s ease-in-out infinite;
+}
+
+.badge-left {
+    top: 15%;
+    left: -15%;
+    animation-delay: 0s;
+}
+
+.badge-right {
+    bottom: 15%;
+    right: -10%;
+    animation-delay: 2s; 
+}
+
+@keyframes float-anim {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-12px); box-shadow: 0 15px 25px -5px rgba(0,0,0,0.15); }
+    100% { transform: translateY(0px); }
+}
+
+@media (max-width: 768px) {
+    .hero-watermark {
+        font-size: 25vw;
+    }
+    .badge-left {
+        top: -10px;
+        left: 0;
+    }
+    .badge-right {
+        bottom: -10px;
+        right: 0;
+    }
+}
 /* ===== Tech Stack ===== */
 
 .tech{
