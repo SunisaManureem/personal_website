@@ -1,3 +1,22 @@
+/* ===== CSS Variables (อัปเดตเป็นธีม Navy Professional) ===== */
+:root {
+    --primary: #1a365d;         /* สีกรมท่าเข้ม */
+    --primary-dark: #0f172a;    /* สีกรมท่าที่เข้มขึ้นเมื่อ Hover */
+    --secondary: #64748b;
+    --accent: #10b981;          /* สีเขียวมิ้นต์สำหรับตกแต่ง (เช่น จุด Badge) */
+    --background: #fdfdfd;      /* สีพื้นหลังสว่างสะอาดตา */
+    --surface: #ffffff;         /* สีพื้นหลังของการ์ด */
+    --text: #1e293b;            /* สีข้อความหลัก */
+    --text-secondary: #475569;  /* สีข้อความรอง */
+    --border: #e2e8f0;
+    --success: #22c55e;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 4px 10px -4px rgb(0 0 0 / 0.1);
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
 body{
 margin:0;
 font-family:sans-serif;
