@@ -100,6 +100,126 @@ img {
     z-index: 1000;
     transition: var(--transition);
 }
+/* ===== Hero Section (ปรับพื้นหลังไล่ระดับสีพรีเมียม) ===== */
+.hero{
+min-height:90vh;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:60px;
+padding:120px 20px 80px;
+position:relative;
+border-top: 1px solid rgba(255,255,255,0.04);
+background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #eef2f7 50%,
+    #dbe4f0 100%
+    );
+}
+/* Dark Mode Hero */
+.hero{
+transition: background 0.4s ease;
+}
+
+[data-theme="dark"] .hero {
+
+background: linear-gradient(
+120deg,
+#0f172a 0%,
+#0b1324 45%,
+#020617 100%
+);
+
+}
+
+/* light glow effect */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: -150px;
+    left: -150px;
+    width: 400px;
+    height: 400px;
+
+    background: radial-gradient(
+        circle,
+        rgba(26,54,93,0.05) 0%,
+        transparent 70%
+    );
+
+    z-index: 0;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    right:10%;
+    top:30%;
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle, rgba(26,54,93,0.08), transparent 70%);
+    z-index:0;
+}
+.hero-container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:100px;
+}
+/* สไตล์กล่อง Badge ที่เพิ่มเข้ามาใหม่ */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+}
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent);
+    border-radius: 50%;
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+}
+
+.highlight {
+    color: var(--primary);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.hero-description {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 36px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
 
 body{
 margin:0;
