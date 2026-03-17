@@ -68,7 +68,7 @@ const sectionHeight = section.offsetHeight;
 const sectionTop = section.offsetTop - 150;
 const sectionId = section.getAttribute("id");
 
-if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
+if(scrollY >= sectionTop && scrollY < sectionTop + sectionHeight){
 
 navLinks.forEach(link => {
 link.classList.remove("active");
@@ -82,6 +82,11 @@ link.classList.add("active");
 }
 
 });
+// FIX: scroll ถึงล่างสุด = contact active
+if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+    navLinks.forEach(link => link.classList.remove("active"));
+    document.querySelector('a[href="#contact"]').classList.add("active");
+}
 
 });
 // ===== Navbar Active Page =====
