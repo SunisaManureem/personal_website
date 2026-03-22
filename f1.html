@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F1 Racing Game</title>
+
+<!-- เชื่อม CSS -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- fallback ถ้าไม่มี JS -->
+<noscript>
+<p style="text-align:center;color:red;">
+This game requires JavaScript to run.
+</p>
+</noscript>
+
+<div class="game-container">
+
+    <h1>🏎️ F1 Racing Game</h1>
+
+    <!-- CANVAS เกม -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- SCORE -->
+    <p id="score">Score: 0</p>
+
+    <!-- LIVES -->
+    <p id="lives">Lives: ❤️❤️❤️</p>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <button id="leftBtn">⬅️</button>
+        <button id="rightBtn">➡️</button>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="gameOver" class="hidden">
+        <h2>💥 Game Over</h2>
+        <p id="finalScore"></p>
+        <button onclick="restartGame()">Restart</button>
+    </div>
+
+</div>
+
+<!-- เชื่อม JS -->
+<script src="js/f1.js"></script>
+
+</body>
+</html>

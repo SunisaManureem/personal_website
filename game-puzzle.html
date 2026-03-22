@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F1 Puzzle Game</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="game-container">
+    <h1>🧩 F1 Puzzle Game</h1>
+
+    <div class="game-info">
+    <span>⏱ Time: <span id="timer">0</span>s</span>
+    <span>🔢 Moves: <span id="moves">0</span></span>
+</div>
+
+<div class="game-top">
+    <div class="game-info">
+        ⏱ <span id="timer">0</span>s
+        | 🔢 <span id="moves">0</span>
+    </div>
+
+    <div class="game-controls">
+        <select id="difficulty">
+            <option value="3">3x3</option>
+            <option value="4">4x4</option>
+            <option value="5">5x5</option>
+        </select>
+
+        <button onclick="startGame()">Start</button>
+        <button onclick="shuffle()">Shuffle</button>
+    </div>
+</div>
+
+    <div id="puzzleBoard"></div>
+
+    <p id="status"></p>
+</div>
+
+<script src="js/puzzle.js"></script>
+</body>
+</html>
