@@ -1,3 +1,4 @@
+//main.js
 console.log("Portfolio loaded");
 // Dark Mode Toggle Logic
 const themeToggleBtn = document.getElementById('themeToggle');
@@ -60,45 +61,80 @@ const navLinks = document.querySelectorAll(".nav-link");
 
 window.addEventListener("scroll", () => {
 
-let scrollY = window.pageYOffset;
+    let scrollY = window.pageYOffset;
 
-sections.forEach(section => {
+    sections.forEach(section => {
+        const sectionHeight = section.offsetHeight;
+        const sectionTop = section.offsetTop - 150;
+        const sectionId = section.getAttribute("id");
 
-const sectionHeight = section.offsetHeight;
-const sectionTop = section.offsetTop - 150;
-const sectionId = section.getAttribute("id");
+        if(scrollY >= sectionTop && scrollY < sectionTop + sectionHeight){
+            navLinks.forEach(link => {
+                link.classList.remove("active");
 
-if(scrollY >= sectionTop && scrollY < sectionTop + sectionHeight){
+                if(link.getAttribute("href") === "#" + sectionId){
+                    link.classList.add("active");
+                }
+            });
+        }
+    });
 
-navLinks.forEach(link => {
-link.classList.remove("active");
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+        const contactLink = document.querySelector('a[href="#contact"]');
 
-if(link.getAttribute("href") === "#" + sectionId){
-link.classList.add("active");
-}
+        if (contactLink) {
+            navLinks.forEach(link => link.classList.remove("active"));
+            contactLink.classList.add("active");
+        }
+    }
+
+});
+// ===== SKILL PROGRESS (index.html) =====
+const skillSection = document.querySelector("#skills");
+const progressBars = document.querySelectorAll(".skill-progress");
+
+let skillPlayed = false;
+
+window.addEventListener("scroll", () => {
+
+    if (skillSection) {
+        const sectionTop = skillSection.offsetTop - 200;
+
+        if (window.scrollY >= sectionTop && !skillPlayed) {
+
+            progressBars.forEach(bar => {
+                const value = bar.getAttribute("data-progress");
+                bar.style.width = value + "%";
+            });
+
+            skillPlayed = true;
+        }
+    }
 
 });
 
+const animateSkills = () => {
+    skillBars.forEach(bar => {
+        const value = bar.getAttribute("data-width");
+        bar.style.width = "0";
+
+        setTimeout(() => {
+            bar.style.width = value + "%";
+        }, 200);
+    });
+};
+
+window.addEventListener("load", animateSkills);
+
+// ===== CONTACT FORM HANDLER =====
+const contactForm = document.getElementById("contactForm");
+
+if(contactForm){
+    contactForm.addEventListener("submit", function(e){
+        e.preventDefault(); // ❗ กัน reload
+
+        alert("✅ ส่งข้อความเรียบร้อยแล้ว!");
+
+        contactForm.reset();
+    });
 }
-
-});
-// FIX: scroll ถึงล่างสุด = contact active
-if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
-    navLinks.forEach(link => link.classList.remove("active"));
-    document.querySelector('a[href="#contact"]').classList.add("active");
-}
-
-});
-// ===== Navbar Active Page =====
-
-const currentPage = window.location.pathname.split("/").pop();
-
-navLinks.forEach(link => {
-
-const linkPage = link.getAttribute("href");
-
-if(linkPage === currentPage){
-link.classList.add("active");
-}
-
-});
