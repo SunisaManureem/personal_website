@@ -10,10 +10,6 @@
 
 <div class="game-container">
     <h1>🧩 F1 Puzzle Game</h1>
-
-    <div class="game-info">
-    <span>⏱ Time: <span id="timer">0</span>s</span>
-    <span>🔢 Moves: <span id="moves">0</span></span>
 </div>
 
 <div class="game-top">
@@ -28,10 +24,22 @@
             <option value="4">4x4</option>
             <option value="5">5x5</option>
         </select>
+        <div style="margin-bottom:10px;">
+    <button id="defaultMode" class="btn btn-outline">Default Image</button>
+    <button id="uploadMode" class="btn btn-outline">Upload Image</button>
+</div>
+
+<input type="file" id="uploadImage" accept="image/*" style="display:none;">
 
         <button onclick="startGame()">Start</button>
         <button onclick="shuffle()">Shuffle</button>
     </div>
+</div>
+
+<!-- Preview Section -->
+<div class="preview-wrapper">
+    <img src="images/f1.jpg" id="previewImage">
+    <button id="previewBtn" class="preview-btn">👁 Hold</button>
 </div>
 
     <div id="puzzleBoard"></div>

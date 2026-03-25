@@ -1460,12 +1460,8 @@ transform:translateY(0);
 
 
 #puzzleBoard {
-    width: 300px;
-    height: 300px;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
+    width: 320px;
+    height: 320px;
 }
 
 .tile {
@@ -1474,6 +1470,10 @@ transform:translateY(0);
     background-image: url('../images/f1.jpg');
     background-size: 300px 300px;
     cursor: pointer;
+}
+.tile {
+    aspect-ratio: 1 / 1;
+    background-repeat: no-repeat;
 }
 
 .game-container {
@@ -1551,6 +1551,39 @@ button:hover {
 .game-controls {
     display: flex;
     gap: 10px;
+}
+.preview-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.preview-wrapper img {
+    width: 160px;
+    border-radius: 12px;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.preview-btn {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: none;
+    background: #1a365d;
+    color: white;
+    cursor: pointer;
+}
+.preview-wrapper {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.tile {
+    transition: all 0.2s ease;
 }
 
 

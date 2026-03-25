@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Mode</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="mode-container">
+    <h1>🎮 Puzzle Game</h1>
+    <p>Select your game mode</p>
+
+    <button onclick="selectMode('default')" class="btn btn-primary">
+        Default Image
+    </button>
+
+    <button onclick="selectMode('upload')" class="btn btn-outline">
+        Upload Image
+    </button>
+</div>
+
+<script>
+function selectMode(mode){
+    localStorage.setItem("gameMode", mode);
+    window.location.href = "game-puzzle.html";
+}
+</script>
+
+</body>
+</html>
