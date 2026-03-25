@@ -114,13 +114,9 @@ window.addEventListener("scroll", () => {
 });
 
 const animateSkills = () => {
-    skillBars.forEach(bar => {
-        const value = bar.getAttribute("data-width");
-        bar.style.width = "0";
-
-        setTimeout(() => {
-            bar.style.width = value + "%";
-        }, 200);
+    progressBars.forEach(bar => {
+        const value = bar.getAttribute("data-progress");
+        bar.style.width = value + "%";
     });
 };
 
