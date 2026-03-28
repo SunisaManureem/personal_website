@@ -11,6 +11,12 @@
 </head>
 
 <body>
+    <noscript>
+        <div style="background: #ffefc1; color: #333; padding: 1em; text-align: center;">
+            เว็บไซต์นี้สามารถใช้งานได้แม้ปิด JavaScript แต่บางฟีเจอร์เช่นธีมโหมด, แอนิเมชัน, และเกมจะไม่สมบูรณ์<br>
+            หากต้องการประสบการณ์ที่ดีที่สุด กรุณาเปิดใช้งาน JavaScript
+        </div>
+    </noscript>
     <nav class="navbar" id="navbar">
         <div class="nav-container">
 
@@ -32,6 +38,9 @@
             </ul>
             <!-- Right -->
             <div class="nav-right">
+                <noscript>
+                    <span style="font-size: 0.9em; color: #888;">(ธีมโหมดต้องใช้ JavaScript)</span>
+                </noscript>
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
                     <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
@@ -308,6 +317,12 @@
             <p>&copy; 2026 Sunisa Manureem. All rights reserved.</p>
         </div>
     </footer>
+    <noscript>
+        <style>
+            /* ปิดแอนิเมชันที่ใช้ JS */
+            .animate-fade-in, .delay-1, .delay-2, .delay-3 { opacity: 1 !important; animation: none !important; }
+        </style>
+    </noscript>
     <script src="js/main.js"></script>
 </body>
 
