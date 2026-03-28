@@ -132,6 +132,21 @@ const contactForm = document.getElementById("contactForm");
 
 if(contactForm){
     contactForm.addEventListener("submit", function(e){
+        e.preventDefault(); // ✅ หยุด form เดิม
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("message").value;
+
+        // ✅ encode กันภาษาไทยพัง
+        const subject = encodeURIComponent(`Message from ${name}`);
+        const body = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+        );
+
+        const mailtoLink = `mailto:66030292@kmitl.ac.th?subject=${subject}&body=${body}`;
+
         alert("✅ กำลังเปิด email client...");
+        window.location.href = mailtoLink; // ✅ เปิด Outlook / Mail
     });
 }
