@@ -1,3 +1,95 @@
+@media (max-width: 480px) {
+    .hero-container {
+        flex-direction: column-reverse;
+        gap: 16px;
+        align-items: center;
+    }
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+    }
+    .hero-image {
+        margin-bottom: 12px;
+    }
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .about-info {
+        padding: 12px;
+        font-size: 0.98rem;
+    }
+    .about-text p {
+        font-size: 0.98rem;
+    }
+}
+@media (max-width: 480px) {
+    .container {
+        padding: 0 8px;
+    }
+    .hero {
+        padding: 90px 0 40px;
+        gap: 24px;
+    }
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    .hero-image img {
+        width: 120px;
+        height: 120px;
+        padding: 2px;
+    }
+    .section-title {
+        font-size: 1.3rem;
+        margin-bottom: 24px;
+    }
+    .about-info, .contact-form, .contact-item, .skill-card, .project-card, .cv-sidebar, .cv-main .cv-section, .quiz-container {
+        padding: 12px;
+    }
+    .about-content, .contact-content, .skills-grid, .projects-grid, .cv-grid {
+        gap: 12px;
+    }
+    .tech-item {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    .btn, .btn-primary, .btn-outline {
+        padding: 8px 12px;
+        font-size: 0.95rem;
+    }
+    .form-group input, .form-group textarea {
+        padding: 8px 10px;
+        font-size: 0.95rem;
+    }
+    .project-image {
+        height: 120px;
+    }
+    .cv-photo {
+        width: 70px;
+        height: 70px;
+    }
+    .cv-header {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+    .cv-info h1 {
+        font-size: 1.1rem;
+    }
+    .cv-title {
+        font-size: 0.9rem;
+    }
+    .cv-subtitle {
+        font-size: 0.7rem;
+    }
+    .quiz-title {
+        font-size: 1.2rem;
+    }
+    .quiz-container {
+        padding: 10px;
+    }
+}
 /*style.css
 /* ===== CSS Variables (อัปเดตเป็นธีม Navy Professional) ===== */
 :root {
