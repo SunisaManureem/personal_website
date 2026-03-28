@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Game — Sunisa Portfolio</title>
+  <meta name="description" content="เกมจับคู่การ์ด — ฝึกความจำ">
+  <style>
+    /* ============================================================
+       LAYER 2 — CSS: Visual Enhancement
+       ทุกอย่างที่อยู่ใน <style> นี้เป็น enhancement ล้วนๆ
+       ถ้าไม่โหลด CSS เนื้อหาใน HTML ยังอ่าน/ใช้งานได้
+    ============================================================ */
+
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg:        #0f0f13;
+      --surface:   #1a1a22;
+      --surface2:  #24242e;
+      --border:    #2e2e3a;
+      --accent:    #7c6af7;
+      --accent2:   #f76a8a;
+      --text:      #e8e6ff;
+      --muted:     #7a7898;
+      --card-back: #1e1e2a;
+      --flip-dur:  0.45s;
+      --radius:    14px;
+    }
+
+    [data-theme="light"] {
+      --bg:        #f5f3ff;
+      --surface:   #ffffff;
+      --surface2:  #ede9ff;
+      --border:    #d5cfff;
+      --text:      #1a1830;
+      --muted:     #6b6588;
+      --card-back: #e8e3ff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background .3s, color .3s;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .nav a { color: var(--muted); text-decoration: none; font-size: .8rem; letter-spacing: .05em; }
+    .nav a:hover { color: var(--text); }
+    .nav-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--accent); }
+    .theme-btn {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); cursor: pointer; padding: .35rem .6rem; font-size: .85rem;
+    }
+    .theme-btn:hover { border-color: var(--accent); }
+    .theme-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ── Layout ── */
+    .wrapper { max-width: 680px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      margin-bottom: .3rem;
+    }
+    h1 em { color: var(--accent); font-style: italic; }
+
+    .subtitle { color: var(--muted); font-size: .8rem; margin-bottom: 1.8rem; }
+
+    /* ── Stats bar ── */
+    .stats {
+      display: flex; gap: 1rem; margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: .5rem .9rem;
+      font-size: .78rem; color: var(--muted);
+    }
+    .stat strong { color: var(--text); font-size: 1rem; display: block; }
+
+    /* ── Controls ── */
+    .controls { display: flex; gap: .6rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; padding: .5rem 1rem;
+      border-radius: 8px; cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface2); color: var(--text);
+      transition: all .15s;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-restart {
+      background: var(--surface2); border-color: var(--accent2); color: var(--accent2);
+    }
+    .btn-restart:hover { background: var(--accent2); color: #fff; }
+
+    /* ── Board ── */
+    #board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .7rem;
+    }
+    #board.grid-2 { grid-template-columns: repeat(2, 1fr); }
+    #board.grid-3 { grid-template-columns: repeat(3, 1fr); }
+    #board.grid-4 { grid-template-columns: repeat(4, 1fr); }
+    #board.grid-5 { grid-template-columns: repeat(5, 1fr); }
+    #board.grid-6 { grid-template-columns: repeat(6, 1fr); }
+
+    /* ── Card flip ── */
+    .card {
+      aspect-ratio: 1;
+      perspective: 600px;
+      cursor: pointer;
+      border-radius: var(--radius);
+    }
+    /* keyboard focus on card */
+    .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+    .card-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform var(--flip-dur) cubic-bezier(.4,0,.2,1);
+      border-radius: var(--radius);
+    }
+    .card.flipped .card-inner, .card.matched .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+    }
+    /* Back = hidden side */
+    .card-back {
+      background: var(--card-back);
+      font-size: 1.4rem; color: var(--muted);
+    }
+    /* Front = revealed */
+    .card-front {
+      background: var(--surface);
+      transform: rotateY(180deg);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      flex-direction: column; gap: .3rem;
+    }
+    .card-front .card-label {
+      font-size: clamp(.45rem, 1.5vw, .62rem);
+      color: var(--muted); text-align: center; padding: 0 4px;
+      line-height: 1.2;
+    }
+    .card.matched .card-front {
+      background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+      border-color: var(--accent);
+    }
+    .card.wrong .card-inner { animation: shake .3s ease; }
+
+    @keyframes shake {
+      0%,100% { transform: rotateY(180deg) translateX(0); }
+      25%      { transform: rotateY(180deg) translateX(-6px); }
+      75%      { transform: rotateY(180deg) translateX(6px); }
+    }
+
+    /* ── Win overlay ── */
+    #win-msg {
+      display: none;
+      margin-top: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    #win-msg.show { display: block; animation: pop .3s ease; }
+    #win-msg h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; margin-bottom: .4rem; }
+    #win-msg p  { color: var(--muted); font-size: .82rem; }
+
+    @keyframes pop {
+      from { transform: scale(.9); opacity: 0; }
+      to   { transform: scale(1);  opacity: 1; }
+    }
+
+    /* ── Timer bar ── */
+    #timer-bar-wrap {
+      height: 3px; background: var(--border); border-radius: 2px;
+      margin-bottom: 1.5rem; overflow: hidden;
+    }
+    #timer-bar {
+      height: 100%; width: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width .5s linear, background .5s;
+    }
+
+    /* ── No-JS notice (hidden by JS) ── */
+    #nojs-notice { display: none; }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .card-inner { transition-duration: 0.01ms !important; }
+      @keyframes shake { to { } }
+      @keyframes pop { to { } }
+    }
+
+    /* ── Dark mode auto ── */
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg: #f5f3ff; --surface: #ffffff; --surface2: #ede9ff;
+        --border: #d5cfff; --text: #1a1830; --muted: #6b6588;
+        --card-back: #e8e3ff;
+      }
+    }
+
+    /* ── Print ── */
+    @media print {
+      .controls, .theme-btn, #timer-bar-wrap { display: none; }
+    }
+
+    /* ── Mobile touch friendly ── */
+    @media (max-width: 480px) {
+      #board.grid-6 { grid-template-columns: repeat(4, 1fr); }
+      #board.grid-5 { grid-template-columns: repeat(4, 1fr); }
+      .card-back { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     LAYER 1 — HTML: Semantic Foundation
+     เนื้อหาและโครงสร้างทำงานได้โดยไม่ต้องมี CSS หรือ JS
+============================================================ -->
+
+<nav class="nav" role="navigation" aria-label="site navigation">
+  <a href="index.html">← Back to Portfolio</a>
+  <span class="nav-title">memory.</span>
+  <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light mode">◑</button>
+</nav>
+
+<!-- LAYER 1: noscript fallback — แสดงเฉพาะเมื่อ JS ปิด -->
+<noscript>
+  <div id="nojs-notice" style="display:block; padding:1rem 1.5rem; background:#fef3cd; color:#6b5a00; font-family:monospace; font-size:.85rem; border-bottom:2px solid #f0c040;">
+    ⚠️ JavaScript ถูกปิด — เกมจำเป็นต้องใช้ JS เพื่อพลิกการ์ด
+    แต่คุณยังดูรายการ emoji ทั้งหมดด้านล่างได้
+  </div>
+</noscript>
+
+<main class="wrapper" id="main">
+  <h1>Memory <em>Game</em></h1>
+  <p class="subtitle">// จับคู่การ์ดให้ครบก่อนเวลาหมด</p>
+
+  <!-- Stats — อัปเดตผ่าน JS, ค่าเริ่มต้นเขียนใน HTML เลย -->
+  <div class="stats" role="status" aria-live="polite" aria-label="game stats">
+    <div class="stat"><strong id="stat-moves">0</strong>moves</div>
+    <div class="stat"><strong id="stat-pairs">0</strong>pairs found</div>
+    <div class="stat"><strong id="stat-time">0</strong>seconds</div>
+    <div class="stat"><strong id="stat-best">—</strong>best moves</div>
+  </div>
+
+  <!-- Timer bar (visual only) -->
+  <div id="timer-bar-wrap" aria-hidden="true"><div id="timer-bar"></div></div>
+
+  <!-- Controls -->
+  <div class="controls" role="group" aria-label="difficulty">
+    <button class="btn active" data-size="4" aria-pressed="true">4×4</button>
+    <button class="btn" data-size="3" aria-pressed="false">3×4</button>
+    <button class="btn" data-size="2" aria-pressed="false">2×4</button>
+    <button class="btn btn-restart" id="restartBtn" aria-label="Restart game">↺ Restart</button>
+  </div>
+
+  <!-- Board: JS จะ inject การ์ด, fallback ถ้าไม่มี JS คือ list ด้านล่าง -->
+  <div id="board" class="grid-4" role="grid" aria-label="memory card board"></div>
+
+  <!-- LAYER 1 fallback list — เขียนใน HTML ตรงๆ เพื่อให้ No-JS เห็นได้จริง
+       JS จะซ่อน div นี้เมื่อโหลดสำเร็จ -->
+  <div id="fallback-list" style="margin-top:1.5rem;">
+    <h2 style="font-size:1rem; margin-bottom:.5rem;">รายการ emoji ทั้งหมด (no-JS mode)</h2>
+    <p style="font-size:.8rem; color:gray; margin-bottom:.8rem;">เมื่อ JS ทำงาน รายการนี้จะถูกซ่อนและแสดงเป็นบอร์ดเกมแทน</p>
+    <div style="display:flex; flex-wrap:wrap; gap:.6rem; font-size:2rem; line-height:1;">
+      <span title="Cat">🐱</span>
+      <span title="Dog">🐶</span>
+      <span title="Fox">🦊</span>
+      <span title="Frog">🐸</span>
+      <span title="Penguin">🐧</span>
+      <span title="Lion">🦁</span>
+      <span title="Bear">🐻</span>
+      <span title="Butterfly">🦋</span>
+      <span title="Blossom">🌸</span>
+      <span title="Pizza">🍕</span>
+      <span title="Guitar">🎸</span>
+      <span title="Rocket">🚀</span>
+      <span title="Target">🎯</span>
+      <span title="Rainbow">🌈</span>
+      <span title="Lightning">⚡</span>
+      <span title="Donut">🍩</span>
+      <span title="Circus">🎪</span>
+      <span title="Unicorn">🦄</span>
+      <span title="Cactus">🌵</span>
+      <span title="Theater">🎭</span>
+      <span title="Puzzle">🧩</span>
+      <span title="Dice">🎲</span>
+      <span title="Crystal ball">🔮</span>
+      <span title="Balloon">🎈</span>
+    </div>
+  </div>
+
+  <!-- Win message -->
+  <div id="win-msg" role="alert" aria-live="assertive">
+    <h2>🎉 ชนะแล้ว!</h2>
+    <p id="win-detail"></p>
+    <br>
+    <button class="btn btn-restart" onclick="initGame()">เล่นอีกรอบ</button>
+  </div>
+</main>
+
+<!-- ============================================================
+     LAYER 3 — JavaScript: Behavioral Enhancement
+     ทุก feature นี้เป็น enhancement — ถ้า JS โหลดไม่ได้
+     HTML fallback list ด้านบนยังแสดงข้อมูลได้
+============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ── Feature detection ──────────────────────────────────────
+  const supportsGrid   = CSS.supports('display', 'grid');
+  const supportsFlip   = CSS.supports('transform-style', 'preserve-3d');
+  const supportsLS     = (() => { try { localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true; } catch(e){ return false; } })();
+
+  // ── Emoji pool ────────────────────────────────────────────
+  const EMOJIS = [
+    ['🐱','Cat'],['🐶','Dog'],['🦊','Fox'],['🐸','Frog'],
+    ['🐧','Penguin'],['🦁','Lion'],['🐻','Bear'],['🦋','Butterfly'],
+    ['🌸','Blossom'],['🍕','Pizza'],['🎸','Guitar'],['🚀','Rocket'],
+    ['🎯','Target'],['🌈','Rainbow'],['⚡','Lightning'],['🍩','Donut'],
+    ['🎪','Circus'],['🦄','Unicorn'],['🌵','Cactus'],['🎭','Theater'],
+    ['🧩','Puzzle'],['🎲','Dice'],['🔮','Crystal ball'],['🎈','Balloon'],
+  ];
+
+  // ── State ─────────────────────────────────────────────────
+  let cards        = [];
+  let flipped      = [];
+  let matched      = 0;
+  let moves        = 0;
+  let lockBoard    = false;
+  let timer        = 0;
+  let timerID      = null;
+  let gameStarted  = false;
+  let gridCols     = 4;   // columns
+  let gridPairs    = 8;   // pairs (8 = 4×4)
+
+  // ── DOM refs ──────────────────────────────────────────────
+  const board       = document.getElementById('board');
+  const winMsg      = document.getElementById('win-msg');
+  const winDetail   = document.getElementById('win-detail');
+  const statMoves   = document.getElementById('stat-moves');
+  const statPairs   = document.getElementById('stat-pairs');
+  const statTime    = document.getElementById('stat-time');
+  const statBest    = document.getElementById('stat-best');
+  const timerBar    = document.getElementById('timer-bar');
+  const fallbackDiv = document.getElementById('fallback-list');
+
+  // ── Hide fallback when JS is running ─────────────────────
+  if (fallbackDiv) fallbackDiv.style.display = 'none';
+
+  // ── Utilities ─────────────────────────────────────────────
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function bestKey() { return 'memory_best_' + gridPairs; }
+
+  function loadBest() {
+    if (!supportsLS) return null;
+    const v = localStorage.getItem(bestKey());
+    return v ? parseInt(v) : null;
+  }
+
+  function saveBest(m) {
+    if (!supportsLS) return;
+    const prev = loadBest();
+    if (prev === null || m < prev) localStorage.setItem(bestKey(), m);
+  }
+
+  function updateBestDisplay() {
+    const b = loadBest();
+    statBest.textContent = b !== null ? b : '—';
+  }
+
+  // ── Timer ─────────────────────────────────────────────────
+  function startTimer() {
+    timerID = setInterval(() => {
+      timer++;
+      statTime.textContent = timer;
+      // Timer bar — max 120s visual
+      const pct = Math.max(0, 100 - (timer / 120) * 100);
+      timerBar.style.width = pct + '%';
+      if (pct < 30) timerBar.style.background = 'var(--accent2)';
+    }, 1000);
+  }
+
+  function stopTimer() { clearInterval(timerID); timerID = null; }
+
+  // ── Build board ───────────────────────────────────────────
+  function initGame() {
+    stopTimer();
+    timer = 0; moves = 0; matched = 0;
+    lockBoard = false; flipped = []; gameStarted = false;
+    cards = [];
+
+    statMoves.textContent = '0';
+    statPairs.textContent = '0';
+    statTime.textContent  = '0';
+    timerBar.style.width  = '100%';
+    timerBar.style.background = '';
+    winMsg.classList.remove('show');
+
+    updateBestDisplay();
+
+    // pick pairs
+    const pool    = shuffle(EMOJIS).slice(0, gridPairs);
+    const doubled = shuffle([...pool, ...pool]);
+
+    board.innerHTML = '';
+    // set grid class
+    board.className = 'grid-' + gridCols;
+
+    doubled.forEach(([emoji, label], idx) => {
+      const card = createCard(emoji, label, idx);
+      board.appendChild(card);
+      cards.push(card);
+    });
+  }
+
+  // ── Create card element ───────────────────────────────────
+  function createCard(emoji, label, idx) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('role', 'gridcell');
+    card.setAttribute('aria-label', 'Card ' + (idx + 1) + ' — hidden');
+    card.setAttribute('tabindex', '0');
+    card.dataset.emoji = emoji;
+    card.dataset.label = label;
+
+    // LAYER 1: falls back gracefully if CSS 3D not supported
+    if (supportsFlip) {
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-back" aria-hidden="true">✦</div>
+          <div class="card-front" aria-hidden="true">
+            <span>${emoji}</span>
+            <span class="card-label">${label}</span>
+          </div>
+        </div>`;
+    } else {
+      // No 3D support: simple show/hide instead of flip
+      card.innerHTML = `<div class="card-back" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);background:var(--card-back);">✦</div>
+                        <div class="card-front" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;border-radius:var(--radius);background:var(--surface);">${emoji}</div>`;
+    }
+
+    // LAYER 3: Click handler
+    card.addEventListener('click', () => flipCard(card));
+
+    // LAYER 3: Keyboard support (Space / Enter)
+    card.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        flipCard(card);
+      }
+    });
+
+    // LAYER 3: Touch support
+    card.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      flipCard(card);
+    }, { passive: false });
+
+    return card;
+  }
+
+  // ── Flip logic ────────────────────────────────────────────
+  function flipCard(card) {
+    if (lockBoard) return;
+    if (card.classList.contains('flipped')) return;
+    if (card.classList.contains('matched')) return;
+
+    // Start timer on first flip
+    if (!gameStarted) { gameStarted = true; startTimer(); }
+
+    // No-3D fallback flip
+    if (!supportsFlip) {
+      card.querySelector('.card-back').style.display = 'none';
+      card.querySelector('.card-front').style.display = 'flex';
+    }
+
+    card.classList.add('flipped');
+    card.setAttribute('aria-label', 'Card — ' + card.dataset.label);
+    flipped.push(card);
+
+    if (flipped.length === 2) checkMatch();
+  }
+
+  // ── Match check ───────────────────────────────────────────
+  function checkMatch() {
+    lockBoard = true;
+    moves++;
+    statMoves.textContent = moves;
+
+    const [a, b] = flipped;
+
+    if (a.dataset.emoji === b.dataset.emoji) {
+      // Match!
+      a.classList.add('matched'); a.classList.remove('flipped');
+      b.classList.add('matched'); b.classList.remove('flipped');
+      a.setAttribute('aria-label', 'Matched — ' + a.dataset.label);
+      b.setAttribute('aria-label', 'Matched — ' + b.dataset.label);
+      a.removeAttribute('tabindex'); b.removeAttribute('tabindex');
+      matched++;
+      statPairs.textContent = matched;
+      flipped = [];
+      lockBoard = false;
+      if (matched === gridPairs) endGame();
+    } else {
+      // No match — shake and flip back
+      a.classList.add('wrong'); b.classList.add('wrong');
+      setTimeout(() => {
+        a.classList.remove('flipped', 'wrong');
+        b.classList.remove('flipped', 'wrong');
+        a.setAttribute('aria-label', 'Card — hidden');
+        b.setAttribute('aria-label', 'Card — hidden');
+        if (!supportsFlip) {
+          [a, b].forEach(c => {
+            c.querySelector('.card-back').style.display = 'flex';
+            c.querySelector('.card-front').style.display = 'none';
+          });
+        }
+        flipped = [];
+        lockBoard = false;
+      }, 900);
+    }
+  }
+
+  // ── End game ──────────────────────────────────────────────
+  function endGame() {
+    stopTimer();
+    saveBest(moves);
+    updateBestDisplay();
+    winDetail.textContent = `เวลา ${timer} วินาที · ${moves} ครั้ง · ${gridPairs} คู่`;
+    winMsg.classList.add('show');
+    winMsg.focus();
+  }
+
+  // ── Difficulty buttons ────────────────────────────────────
+  document.querySelectorAll('[data-size]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-size]').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
+      const s = parseInt(btn.dataset.size);
+      if (s === 4) { gridCols = 4; gridPairs = 8; }
+      if (s === 3) { gridCols = 4; gridPairs = 6; }
+      if (s === 2) { gridCols = 4; gridPairs = 4; }
+      initGame();
+    });
+  });
+
+  // ── Restart button ────────────────────────────────────────
+  document.getElementById('restartBtn').addEventListener('click', initGame);
+
+  // ── Dark/light theme toggle ───────────────────────────────
+  const themeBtn = document.getElementById('themeBtn');
+  const root = document.documentElement;
+
+  // Respect saved preference
+  if (supportsLS) {
+    const saved = localStorage.getItem('theme');
+    if (saved) root.setAttribute('data-theme', saved);
+  }
+
+  themeBtn.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') !== 'light';
+    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    if (supportsLS) localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  });
+
+  // ── Page visibility — pause timer when tab hidden ─────────
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && gameStarted && timerID) stopTimer();
+    else if (!document.hidden && gameStarted && !timerID && matched < gridPairs) startTimer();
+  });
+
+  // ── Cleanup on unload — prevent memory leak ───────────────
+  window.addEventListener('beforeunload', stopTimer);
+
+  // ── Start! ────────────────────────────────────────────────
+  initGame();
+
+})();
+</script>
+</body>
+</html>
