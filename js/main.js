@@ -39,20 +39,25 @@ const revealOptions = {
     rootMargin: "0px 0px -50px 0px"
 };
 
-const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+// ✅ ตรวจ IntersectionObserver ก่อนใช้ — ไม่ใช่สมมติว่ามี
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+  revealElements.forEach(el => revealObserver.observe(el));
+} else {
+  // Fallback: แสดงทุก element ทันที
+  revealElements.forEach(el => el.classList.add('active'));
+}
 
-revealElements.forEach(el => {
-    revealObserver.observe(el);
-});
-
-// Trigger reveal on load for elements already in view
-window.addEventListener('load', () => {
-    revealElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) {
-            el.classList.add('active');
-        }
+// ✅ Skill progress — ใช้ requestAnimationFrame แทน scroll event ดิบๆ
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      checkSkillSection();
+      ticking = false;
     });
+    ticking = true;
+  }
 });
 // ===== Navbar Active Section =====
 
@@ -127,10 +132,6 @@ const contactForm = document.getElementById("contactForm");
 
 if(contactForm){
     contactForm.addEventListener("submit", function(e){
-        e.preventDefault(); // ❗ กัน reload
-
-        alert("✅ ส่งข้อความเรียบร้อยแล้ว!");
-
-        contactForm.reset();
+        alert("✅ กำลังเปิด email client...");
     });
 }
