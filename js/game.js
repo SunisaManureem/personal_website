@@ -348,20 +348,37 @@
   }
 
   // ── Dark/light theme toggle ───────────────────────────────
-  const themeBtn = document.getElementById('themeBtn');
+  const themeToggle = document.getElementById('themeToggle');
   const root = document.documentElement;
+  const body = document.body;
 
   // Respect saved preference
   if (supportsLS) {
     const saved = localStorage.getItem('theme');
-    if (saved) root.setAttribute('data-theme', saved);
+    if (saved) {
+      root.setAttribute('data-theme', saved);
+      body.setAttribute('data-theme', saved);
+    }
   }
 
-  themeBtn.addEventListener('click', () => {
-    const isDark = root.getAttribute('data-theme') !== 'light';
-    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    if (supportsLS) localStorage.setItem('theme', isDark ? 'light' : 'dark');
-  });
+  const applyTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    body.setAttribute('data-theme', theme);
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+    }
+  };
+
+  const currentTheme = root.getAttribute('data-theme') || body.getAttribute('data-theme') || 'light';
+  applyTheme(currentTheme);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const theme = (root.getAttribute('data-theme') === 'dark' || body.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+      applyTheme(theme);
+      if (supportsLS) localStorage.setItem('theme', theme);
+    });
+  }
 
   // ── Page visibility — pause timer when tab hidden ─────────
   document.addEventListener('visibilitychange', () => {
