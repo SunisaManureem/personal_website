@@ -2026,13 +2026,33 @@ h1 {
   background: none;
   border: none;
   cursor: pointer;
+  margin-left: auto;
 }
 
 /* Mobile */
 @media (max-width: 768px) {
 
+  .nav-container {
+    position: relative;
+    justify-content: space-between;
+  }
+
   .menu-toggle {
     display: block;
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    z-index: 1100;
+    margin-left: 0;
+  }
+
+  .nav-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nav-right {
+    display: none;
   }
 
   .nav-menu {
@@ -2045,9 +2065,74 @@ h1 {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    width: calc(100% - 40px);
+    max-width: 330px;
   }
 
   .nav-menu.active {
     display: flex;
+  
+}
+
+/* ===== Responsive Enhancements (non-breaking safe overrides) ===== */
+
+/* 1) hero image ใช้ขนาดปรับตาม container และไม่กำหนดซ้ำแน่น */
+.hero-image img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+}
+
+/* 2) layout ส่วนต่าง ๆ ปรับให้เหมาะ tablet/desktop */
+@media (max-width: 1024px) {
+  .hero-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
   }
+
+  .about-content,
+  .contact-content,
+  .cv-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .projects-grid,
+  .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+    gap: 20px;
+  }
+
+  .cv-section,
+  .project-card,
+  .skill-card,
+  .contact-item,
+  .contact-form {
+    padding: 16px !important;
+  }
+}
+
+/* 3) จอมือถือเล็กสุด คงคอนดิชันเดิม แต่เข้มข้นขึ้น */
+@media (max-width: 480px) {
+  .hero-image img {
+    width: 180px;
+    height: 180px;
+    border-width: 4px;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .cv-grid,
+  .about-content,
+  .contact-content {
+    gap: 12px;
+  }
+
+  .project-image {
+    height: 120px;
+  }
+}
 }
