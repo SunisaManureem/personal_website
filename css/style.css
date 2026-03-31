@@ -1794,7 +1794,13 @@ transform:translateY(0);
 ================================ */
 
 /* 🌌 Background ลึกขึ้น */
-body {
+/* 🌞 LIGHT MODE */
+[data-theme="light"] body {
+  background: #f5f3ff;
+}
+
+/* 🌙 DARK MODE */
+[data-theme="dark"] body {
   background:
     radial-gradient(circle at 20% 20%, rgba(124,106,247,0.25), transparent 40%),
     radial-gradient(circle at 80% 30%, rgba(79,70,229,0.2), transparent 40%),
@@ -2013,3 +2019,35 @@ h1 {
   text-shadow: 0 0 25px rgba(247,106,138,1);
 }
 
+/* ===== MOBILE MENU ===== */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+}

@@ -150,3 +150,10 @@ if(contactForm){
         window.location.href = mailtoLink; // ✅ เปิด Outlook / Mail
     });
 }
+
+const toggle = document.getElementById("menuToggle");
+const menu = document.getElementById("navMenu");
+
+toggle.addEventListener("click", () => {
+  menu.classList.toggle("active");
+});
