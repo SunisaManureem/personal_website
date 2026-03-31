@@ -522,6 +522,8 @@ background: linear-gradient(
     line-height: 1.2;
     margin-bottom: 16px;
     letter-spacing: -1px;
+    color: var(--text);
+    text-shadow: 0 0 0 rgba(0,0,0,0); /* clean baseline */
 }
 
 .highlight {
@@ -899,6 +901,20 @@ color:#94a3b8;
 .cv-info h1 {
     font-size: 2rem;
     font-weight: 800;
+    color: var(--primary-dark);
+    text-shadow: 0 0 7px rgba(26, 54, 93, 0.25);
+}
+
+/* ปรับ CV title ให้ชัดขึ้นในโหมดกลางวัน */
+body:not([data-theme="dark"]) .cv-info h1 {
+    color: var(--primary-dark);
+    text-shadow: 0 0 8px rgba(38, 70, 133, 0.35);
+}
+
+/* โหมดกลางคืนยังอ่านง่าย */
+[data-theme="dark"] .cv-info h1 {
+    color: #dbe4ff;
+    text-shadow: 0 0 8px rgba(124, 136, 253, 0.5);
 }
 
 .cv-title {
