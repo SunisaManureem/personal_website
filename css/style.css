@@ -130,6 +130,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden; /* ป้องกัน scrollbar แนวนอนจากเอฟเฟกต์ล้น */
 }
 
 body {
@@ -138,7 +139,13 @@ body {
     color: var(--text);
     line-height: 1.6;
     transition: var(--transition);
+    overflow-x: hidden;
 }
+
+.hero {
+    overflow: hidden; /* ป้องกัน pseudo-element ที่ล้นขวา */
+}
+
 
 a {
     text-decoration: none;
@@ -328,6 +335,27 @@ color:white;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 26px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
 }
 
 .theme-toggle:hover {
@@ -1636,7 +1664,7 @@ transform:translateY(0);
     .stat strong { color: var(--text); font-size: 1rem; display: block; }
 
     /* ── Controls ── */
-    .controls { display: flex; gap: .6rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .controls { display: flex; justify-content: center; align-items: center; gap: .6rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
     .btn {
       font-family: 'DM Mono', monospace;
       font-size: .78rem; padding: .5rem 1rem;
@@ -2020,7 +2048,8 @@ h1 {
 }
 
 /* ===== MOBILE MENU ===== */
-.menu-toggle {
+.menu-toggle,
+.nav-toggle {
   display: none;
   font-size: 24px;
   background: none;
@@ -2037,7 +2066,8 @@ h1 {
     justify-content: space-between;
   }
 
-  .menu-toggle {
+  .menu-toggle,
+  .nav-toggle {
     display: block;
     position: absolute;
     right: 20px;
