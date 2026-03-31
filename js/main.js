@@ -38,17 +38,12 @@ const revealOptions = {
     threshold: 0.15,
     rootMargin: "0px 0px -50px 0px"
 };
-
-// ✅ ตรวจ IntersectionObserver ก่อนใช้ — ไม่ใช่สมมติว่ามี
 if ('IntersectionObserver' in window) {
   const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
   revealElements.forEach(el => revealObserver.observe(el));
 } else {
-  // Fallback: แสดงทุก element ทันที
   revealElements.forEach(el => el.classList.add('active'));
 }
-
-// ✅ Skill progress — ใช้ requestAnimationFrame แทน scroll event ดิบๆ
 let ticking = false;
 window.addEventListener("scroll", () => {
   if (!ticking) {
@@ -132,13 +127,12 @@ const contactForm = document.getElementById("contactForm");
 
 if(contactForm){
     contactForm.addEventListener("submit", function(e){
-        e.preventDefault(); // ✅ หยุด form เดิม
+        e.preventDefault(); 
 
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const message = document.getElementById("message").value;
 
-        // ✅ encode กันภาษาไทยพัง
         const subject = encodeURIComponent(`Message from ${name}`);
         const body = encodeURIComponent(
             `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
@@ -147,7 +141,7 @@ if(contactForm){
         const mailtoLink = `mailto:66030292@kmitl.ac.th?subject=${subject}&body=${body}`;
 
         alert("✅ กำลังเปิด email client...");
-        window.location.href = mailtoLink; // ✅ เปิด Outlook / Mail
+        window.location.href = mailtoLink; 
     });
 }
 

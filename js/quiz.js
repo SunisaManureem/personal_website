@@ -63,7 +63,6 @@ function loadQuestion() {
 
         option.addEventListener("click", () => selectAnswer(option, q.correct));
 
-        // ✅ ถ้าเคยตอบแล้ว → แสดงคำตอบเดิม
         if (selectedAnswers[currentQuestionIndex]) {
 
             option.style.pointerEvents = "none";
@@ -88,7 +87,6 @@ function selectAnswer(selected, correct) {
 
     const options = document.querySelectorAll(".option");
 
-    // ✅ ถ้าเคยตอบข้อนี้แล้ว → ไม่ให้ตอบซ้ำ
     if (selectedAnswers[currentQuestionIndex]) return;
 
     options.forEach(opt => {
@@ -105,8 +103,6 @@ function selectAnswer(selected, correct) {
     } else {
         selected.classList.add("incorrect");
     }
-
-    // ✅ บันทึกคำตอบ
     selectedAnswers[currentQuestionIndex] = selected.textContent;
 }
 

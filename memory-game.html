@@ -10,11 +10,6 @@
 </head>
 <body class="memory-game">
 
-<!-- ============================================================
-     LAYER 1 — HTML: Semantic Foundation
-     เนื้อหาและโครงสร้างทำงานได้โดยไม่ต้องมี CSS หรือ JS
-============================================================ -->
-
 <nav class="nav" role="navigation" aria-label="site navigation">
   <a href="index.html">← Back to Portfolio</a>
   <span class="nav-title">Wellcome to Memory Game</span>
@@ -36,7 +31,6 @@
   </button>
 </nav>
 
-<!-- LAYER 1: noscript fallback — แสดงเฉพาะเมื่อ JS ปิด -->
 <noscript>
   <div id="nojs-notice" style="display:block; padding:1rem 1.5rem; background:#fef3cd; color:#6b5a00; font-family:monospace; font-size:.85rem; border-bottom:2px solid #f0c040;">
     ⚠️ JavaScript ถูกปิด — เกมจำเป็นต้องใช้ JS เพื่อพลิกการ์ด
@@ -47,7 +41,6 @@
 <main class="wrapper" id="main">
   <h1>Memory <em>Game</em></h1>
 
-  <!-- Stats — อัปเดตผ่าน JS, ค่าเริ่มต้นเขียนใน HTML เลย -->
   <div class="stats" role="status" aria-live="polite">
 
   <div class="stat-card">
@@ -87,11 +80,8 @@
     <button class="btn btn-restart" id="restartBtn" aria-label="Restart game">↺ Restart</button>
   </div>
 
-  <!-- Board: JS จะ inject การ์ด, fallback ถ้าไม่มี JS คือ list ด้านล่าง -->
   <div id="board" class="grid-4" role="grid" aria-label="memory card board"></div>
 
-  <!-- LAYER 1 fallback list — เขียนใน HTML ตรงๆ เพื่อให้ No-JS เห็นได้จริง
-       JS จะซ่อน div นี้เมื่อโหลดสำเร็จ -->
   <div id="fallback-list" style="margin-top:1.5rem;">
     <h2 style="font-size:1rem; margin-bottom:.5rem;">รายการ emoji ทั้งหมด (no-JS mode)</h2>
     <p style="font-size:.8rem; color:gray; margin-bottom:.8rem;">เมื่อ JS ทำงาน รายการนี้จะถูกซ่อนและแสดงเป็นบอร์ดเกมแทน</p>

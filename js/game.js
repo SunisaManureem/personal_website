@@ -24,11 +24,11 @@
   let moves        = 0;
   let lockBoard    = false;
   let timer        = 120;
-  let maxTime      = 120; // ⭐ เพิ่ม
+  let maxTime      = 120; 
   let timerID      = null;
   let gameStarted  = false;
-  let gridCols     = 4;   // columns
-  let gridPairs    = 8;   // pairs (8 = 4×4)
+  let gridCols     = 4;   
+  let gridPairs    = 8;  
   let isGameOver = false;
 
   // ── DOM refs ──────────────────────────────────────────────
@@ -77,11 +77,10 @@
 
   // ── Timer ─────────────────────────────────────────────────
  function startTimer() {
-  if (timerID) return; // กันซ้อน
+  if (timerID) return; 
 
   timerID = setInterval(() => {
 
-  // ⭐ เช็คชนะก่อนทุกครั้ง
   if (matched === gridPairs) {
     stopTimer();
     return;
@@ -99,7 +98,6 @@
   if (timer <= 0 && !isGameOver) {
     stopTimer();
 
-    // ถ้าชนะก่อนหมดเวลา ไม่ต้อง Game Over
     if (matched === gridPairs) {
       return;
     }
@@ -129,7 +127,7 @@
     winMsg.classList.remove('show');
     winMsg.classList.remove('win');
     winMsg.classList.remove('lose');
-    winTitle.textContent = "🎉 ชนะแล้ว!"; // ตั้งค่าจุดเริ่มต้นทุกครั้ง
+    winTitle.textContent = "🎉 ชนะแล้ว!";
 
     updateBestDisplay();
 
@@ -227,7 +225,7 @@
 
   if (a.dataset.emoji === b.dataset.emoji) {
 
-    // ✅ MATCH
+    // MATCH
     a.classList.add('matched'); 
     a.classList.remove('flipped');
 
@@ -246,7 +244,6 @@
     flipped = [];
     lockBoard = false;
 
-    // ⭐ ชนะ
     if (matched === gridPairs && !isGameOver) {
       stopTimer();
       endGame();
@@ -254,7 +251,6 @@
 
   } else {
 
-    // ❌ NOT MATCH เท่านั้น
     a.classList.add('wrong'); 
     b.classList.add('wrong');
 
@@ -286,7 +282,7 @@
     stopTimer();
     saveBest(moves);
     updateBestDisplay();
-    winTitle.textContent = "🎉 ชนะแล้ว!"; // รีเซ็ตหัวข้อให้สอดคล้องกับชัยชนะ
+    winTitle.textContent = "🎉 ชนะแล้ว!"; 
     winDetail.textContent = `เวลา ${timer} วินาที · ${moves} ครั้ง · ${gridPairs} คู่`;
     winMsg.classList.add('show');
     winMsg.focus();
@@ -298,7 +294,7 @@
   lockBoard = true;
   isGameOver = true;
 
-  winTitle.textContent = "⛔ Game Over"; // ⭐ เพิ่มบรรทัดนี้
+  winTitle.textContent = "⛔ Game Over"; 
   winDetail.textContent = "หมดเวลา! ลองใหม่อีกครั้ง";
 
   winMsg.classList.add('show');

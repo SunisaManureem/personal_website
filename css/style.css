@@ -69,17 +69,15 @@
     }
 
 }
-/*style.css
-/* ===== CSS Variables (อัปเดตเป็นธีม Navy Professional) ===== */
 :root {
-    --primary: #1a365d;         /* สีกรมท่าเข้ม */
-    --primary-dark: #0f172a;    /* สีกรมท่าที่เข้มขึ้นเมื่อ Hover */
+    --primary: #1a365d;         
+    --primary-dark: #0f172a;    
     --secondary: #64748b;
-    --accent: #10b981;          /* สีเขียวมิ้นต์สำหรับตกแต่ง (เช่น จุด Badge) */
-    --background: #fdfdfd;      /* สีพื้นหลังสว่างสะอาดตา */
-    --surface: #ffffff;         /* สีพื้นหลังของการ์ด */
-    --text: #1e293b;            /* สีข้อความหลัก */
-    --text-secondary: #475569;  /* สีข้อความรอง */
+    --accent: #10b981;          
+    --background: #fdfdfd;      
+    --surface: #ffffff;        
+    --text: #1e293b;            
+    --text-secondary: #475569;  
     --border: #e2e8f0;
     --success: #22c55e;
     --error: #ef4444;
@@ -109,7 +107,7 @@
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden; /* ป้องกัน scrollbar แนวนอนจากเอฟเฟกต์ล้น */
+    overflow-x: hidden; 
 }
 
 body {
@@ -122,7 +120,7 @@ body {
 }
 
 .hero {
-    overflow: hidden; /* ป้องกัน pseudo-element ที่ล้นขวา */
+    overflow: hidden; 
 }
 
 
@@ -407,7 +405,7 @@ body.index-page .back-button {
     display: block; 
 }
 
-/* ===== Hero Section (ปรับพื้นหลังไล่ระดับสีพรีเมียม) ===== */
+/* ===== Hero Section ===== */
 .hero{
 min-height:90vh;
 display:flex;
@@ -475,7 +473,6 @@ background: linear-gradient(
     gap:60px;
     
 }
-/* สไตล์กล่อง Badge ที่เพิ่มเข้ามาใหม่ */
 .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -530,7 +527,6 @@ background: linear-gradient(
     gap: 16px;
     flex-wrap: wrap;
 }
-/* ปรับแต่งกรอบรูปภาพให้ดูพรีเมียมขึ้น */
 .hero-image{
 position:relative;
 }
@@ -990,7 +986,7 @@ body:not([data-theme="dark"]) .cv-info h1 {
 
 .cv-skill-bar {
     height: 6px;
-    max-width: 260px; /* 🔥 ตัวนี้แหละที่แก้ความยาว */
+    max-width: 260px; 
     background: #e5e7eb;
     border-radius: 10px;
     overflow: hidden;
@@ -1183,7 +1179,7 @@ body:not([data-theme="dark"]) .cv-info h1 {
 
 .option.selected {
     border-color: var(--primary);
-    background: rgba(26, 54, 93, 0.05); /* Navy transparent */
+    background: rgba(26, 54, 93, 0.05); 
 }
 
 .option.correct {
@@ -1384,21 +1380,18 @@ body:not([data-theme="dark"]) .cv-info h1 {
 
 @media print {
 
-    /* 🔥 บีบทั้งหน้า */
     body {
         zoom: 0.75;
         font-size: 11px;
         line-height: 1.4;
     }
 
-    /* ❌ ซ่อนของไม่จำเป็น */
     .navbar,
     .footer,
     .btn {
         display: none !important;
     }
 
-    /* 📄 layout */
     .cv-page {
         padding: 0;
     }
@@ -1407,8 +1400,6 @@ body:not([data-theme="dark"]) .cv-info h1 {
         grid-template-columns: 260px 1fr;
         gap: 15px;
     }
-
-    /* 🔥 ลดช่องว่างทุก section */
     .cv-main {
         gap: 12px;
     }
@@ -1423,13 +1414,11 @@ body:not([data-theme="dark"]) .cv-info h1 {
         padding: 12px;
     }
 
-    /* 🔥 skill bar เต็ม */
     .cv-skill-bar {
         max-width: 100%;
         height: 5px;
     }
 
-    /* 🔥 ลด header */
     .cv-header {
         margin-bottom: 10px;
     }
@@ -1446,7 +1435,6 @@ body:not([data-theme="dark"]) .cv-info h1 {
         font-size: 0.8rem;
     }
 
-    /* 🔥 ตัด shadow */
     .cv-sidebar,
     .cv-main .cv-section {
         box-shadow: none;
@@ -1454,7 +1442,7 @@ body:not([data-theme="dark"]) .cv-info h1 {
     }
 }
 
-/* ===== Hero Decor Elements (ลายน้ำ & ป้ายลอยตัว) ===== */
+/* ===== Hero Decor Elements ===== */
 
 .hero-watermark {
     position: absolute;
