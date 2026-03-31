@@ -187,3 +187,11 @@ navLinksMenu.forEach(link => {
     }
   });
 });
+
+// ===== CV SKILL BAR =====
+const cvSkills = document.querySelectorAll(".cv-skill-fill");
+
+cvSkills.forEach(bar => {
+    const width = bar.getAttribute("data-width");
+    bar.style.width = width + "%";
+});
