@@ -63,18 +63,33 @@ function loadQuestion() {
 
         option.addEventListener("click", () => selectAnswer(option, q.correct));
 
+        // ✅ ถ้าเคยตอบแล้ว → แสดงคำตอบเดิม
+        if (selectedAnswers[currentQuestionIndex]) {
+
+            option.style.pointerEvents = "none";
+
+            if (answer === q.correct) {
+                option.classList.add("correct");
+            }
+
+            if (answer === selectedAnswers[currentQuestionIndex] && answer !== q.correct) {
+                option.classList.add("incorrect");
+            }
+        }
+
         optionsDiv.appendChild(option);
     });
 
     questionContainer.appendChild(optionsDiv);
-
     prevBtn.disabled = currentQuestionIndex === 0;
 }
-
 // ===== SELECT =====
 function selectAnswer(selected, correct) {
 
     const options = document.querySelectorAll(".option");
+
+    // ✅ ถ้าเคยตอบข้อนี้แล้ว → ไม่ให้ตอบซ้ำ
+    if (selectedAnswers[currentQuestionIndex]) return;
 
     options.forEach(opt => {
         opt.style.pointerEvents = "none";
@@ -91,6 +106,7 @@ function selectAnswer(selected, correct) {
         selected.classList.add("incorrect");
     }
 
+    // ✅ บันทึกคำตอบ
     selectedAnswers[currentQuestionIndex] = selected.textContent;
 }
 
