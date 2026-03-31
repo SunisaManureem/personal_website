@@ -338,9 +338,11 @@ color:white;
 }
 
 .back-button {
-    position: relative;
-    left: -10px;
-    margin-right: 8px;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1100;
     font-size: 0.95rem;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -353,9 +355,16 @@ color:white;
     transition: var(--transition);
 }
 
+body.memory-game .back-button,
+body.quiz-page .back-button,
+body.cv-page .back-button,
+body.index-page .back-button {
+    left: 16px;
+}
 .navbar .nav-container {
     align-items: center;
     min-height: 60px;
+    position: relative;
 }
 
 .back-button:hover {

@@ -151,9 +151,39 @@ if(contactForm){
     });
 }
 
-const toggle = document.getElementById("menuToggle");
+const toggle = document.getElementById("menuToggle") || document.getElementById("navToggle");
 const menu = document.getElementById("navMenu");
+const navToggle = document.querySelector(".nav-toggle");
 
-toggle.addEventListener("click", () => {
-  menu.classList.toggle("active");
+const closeNavMenu = () => {
+  if (menu && menu.classList.contains("active")) {
+    menu.classList.remove("active");
+    if (navToggle) {
+      navToggle.classList.remove("active");
+    }
+  }
+};
+
+if (toggle && menu) {
+  toggle.addEventListener("click", () => {
+    menu.classList.toggle("active");
+    if (navToggle) {
+      navToggle.classList.toggle("active");
+    }
+  });
+} else if (toggle && !menu) {
+  toggle.addEventListener("click", () => {
+    if (navToggle) {
+      navToggle.classList.toggle("active");
+    }
+  });
+}
+
+const navLinksMenu = document.querySelectorAll(".nav-link");
+navLinksMenu.forEach(link => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth <= 768) {
+      closeNavMenu();
+    }
+  });
 });
