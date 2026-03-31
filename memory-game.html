@@ -35,12 +35,33 @@
   <p class="subtitle">// จับคู่การ์ดให้ครบก่อนเวลาหมด</p>
 
   <!-- Stats — อัปเดตผ่าน JS, ค่าเริ่มต้นเขียนใน HTML เลย -->
-  <div class="stats" role="status" aria-live="polite" aria-label="game stats">
-    <div class="stat"><strong id="stat-moves">0</strong>moves</div>
-    <div class="stat"><strong id="stat-pairs">0</strong>pairs found</div>
-    <div class="stat"><strong id="stat-time">0</strong>seconds</div>
-    <div class="stat"><strong id="stat-best">—</strong>best moves</div>
+  <div class="stats" role="status" aria-live="polite">
+
+  <div class="stat-card">
+    <div class="icon">✨</div>
+    <div class="value" id="stat-moves">0</div>
+    <div class="label">MOVES</div>
   </div>
+
+  <div class="stat-card">
+    <div class="icon">📚</div>
+    <div class="value" id="stat-pairs">0</div>
+    <div class="label">PAIRS</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="icon">⏱</div>
+    <div class="value" id="stat-time">0</div>
+    <div class="label">TIME</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="icon">🏆</div>
+    <div class="value" id="stat-best">—</div>
+    <div class="label">BEST</div>
+  </div>
+
+</div>
 
   <!-- Timer bar (visual only) -->
   <div id="timer-bar-wrap" aria-hidden="true"><div id="timer-bar"></div></div>
@@ -91,13 +112,12 @@
 
   <!-- Win message -->
   <div id="win-msg" role="alert" aria-live="assertive">
-    <h2>🎉 ชนะแล้ว!</h2>
+    <h2 id="win-title">🎉 ชนะแล้ว!</h2>
     <p id="win-detail"></p>
     <br>
     <button class="btn btn-restart" id="winRestartBtn">เล่นอีกรอบ</button>
   </div>
 </main>
-</script>
 <script src="js/game.js"></script>
 </body>
 </html>

@@ -23,11 +23,13 @@
   let matched      = 0;
   let moves        = 0;
   let lockBoard    = false;
-  let timer        = 0;
+  let timer        = 120;
+  let maxTime      = 120; // ⭐ เพิ่ม
   let timerID      = null;
   let gameStarted  = false;
   let gridCols     = 4;   // columns
   let gridPairs    = 8;   // pairs (8 = 4×4)
+  let isGameOver = false;
 
   // ── DOM refs ──────────────────────────────────────────────
   const board       = document.getElementById('board');
@@ -39,6 +41,7 @@
   const statBest    = document.getElementById('stat-best');
   const timerBar    = document.getElementById('timer-bar');
   const fallbackDiv = document.getElementById('fallback-list');
+  const winTitle = document.getElementById('win-title');
 
   // ── Hide fallback when JS is running ─────────────────────
   if (fallbackDiv) fallbackDiv.style.display = 'none';
@@ -73,25 +76,50 @@
   }
 
   // ── Timer ─────────────────────────────────────────────────
-  function startTimer() {
-    timerID = setInterval(() => {
-      timer++;
-      statTime.textContent = timer;
-      // Timer bar — max 120s visual
-      const pct = Math.max(0, 100 - (timer / 120) * 100);
-      timerBar.style.width = pct + '%';
-      if (pct < 30) timerBar.style.background = 'var(--accent2)';
-    }, 1000);
+ function startTimer() {
+  if (timerID) return; // กันซ้อน
+
+  timerID = setInterval(() => {
+
+  // ⭐ เช็คชนะก่อนทุกครั้ง
+  if (matched === gridPairs) {
+    stopTimer();
+    return;
   }
+
+  timer--;
+
+  statTime.textContent = timer;
+
+  const pct = Math.max(0, (timer / maxTime) * 100);
+  timerBar.style.width = pct + '%';
+
+  if (pct < 30) timerBar.style.background = 'var(--accent2)';
+
+  if (timer <= 0 && !isGameOver) {
+    stopTimer();
+
+    // ถ้าชนะก่อนหมดเวลา ไม่ต้อง Game Over
+    if (matched === gridPairs) {
+      return;
+    }
+
+    isGameOver = true;
+    gameOver();
+  }
+
+}, 1000);
+}
 
   function stopTimer() { clearInterval(timerID); timerID = null; }
 
   // ── Build board ───────────────────────────────────────────
   function initGame() {
     stopTimer();
-    timer = 0; moves = 0; matched = 0;
+    timer = maxTime; moves = 0; matched = 0;
     lockBoard = false; flipped = []; gameStarted = false;
     cards = [];
+    isGameOver = false;
 
     statMoves.textContent = '0';
     statPairs.textContent = '0';
@@ -99,6 +127,9 @@
     timerBar.style.width  = '100%';
     timerBar.style.background = '';
     winMsg.classList.remove('show');
+    winMsg.classList.remove('win');
+    winMsg.classList.remove('lose');
+    winTitle.textContent = "🎉 ชนะแล้ว!"; // ตั้งค่าจุดเริ่มต้นทุกครั้ง
 
     updateBestDisplay();
 
@@ -165,6 +196,7 @@
 
   // ── Flip logic ────────────────────────────────────────────
   function flipCard(card) {
+    if (isGameOver) return;
     if (lockBoard) return;
     if (card.classList.contains('flipped')) return;
     if (card.classList.contains('matched')) return;
@@ -187,54 +219,94 @@
 
   // ── Match check ───────────────────────────────────────────
   function checkMatch() {
-    lockBoard = true;
-    moves++;
-    statMoves.textContent = moves;
+  lockBoard = true;
+  moves++;
+  statMoves.textContent = moves;
 
-    const [a, b] = flipped;
+  const [a, b] = flipped;
 
-    if (a.dataset.emoji === b.dataset.emoji) {
-      // Match!
-      a.classList.add('matched'); a.classList.remove('flipped');
-      b.classList.add('matched'); b.classList.remove('flipped');
-      a.setAttribute('aria-label', 'Matched — ' + a.dataset.label);
-      b.setAttribute('aria-label', 'Matched — ' + b.dataset.label);
-      a.removeAttribute('tabindex'); b.removeAttribute('tabindex');
-      matched++;
-      statPairs.textContent = matched;
+  if (a.dataset.emoji === b.dataset.emoji) {
+
+    // ✅ MATCH
+    a.classList.add('matched'); 
+    a.classList.remove('flipped');
+
+    b.classList.add('matched'); 
+    b.classList.remove('flipped');
+
+    a.setAttribute('aria-label', 'Matched — ' + a.dataset.label);
+    b.setAttribute('aria-label', 'Matched — ' + b.dataset.label);
+
+    a.removeAttribute('tabindex'); 
+    b.removeAttribute('tabindex');
+
+    matched++;
+    statPairs.textContent = matched;
+
+    flipped = [];
+    lockBoard = false;
+
+    // ⭐ ชนะ
+    if (matched === gridPairs && !isGameOver) {
+      stopTimer();
+      endGame();
+    }
+
+  } else {
+
+    // ❌ NOT MATCH เท่านั้น
+    a.classList.add('wrong'); 
+    b.classList.add('wrong');
+
+    setTimeout(() => {
+      a.classList.remove('flipped', 'wrong');
+      b.classList.remove('flipped', 'wrong');
+
+      a.setAttribute('aria-label', 'Card — hidden');
+      b.setAttribute('aria-label', 'Card — hidden');
+
+      if (!supportsFlip) {
+        [a, b].forEach(c => {
+          c.querySelector('.card-back').style.display = 'flex';
+          c.querySelector('.card-front').style.display = 'none';
+        });
+      }
+
       flipped = [];
       lockBoard = false;
-      if (matched === gridPairs) endGame();
-    } else {
-      // No match — shake and flip back
-      a.classList.add('wrong'); b.classList.add('wrong');
-      setTimeout(() => {
-        a.classList.remove('flipped', 'wrong');
-        b.classList.remove('flipped', 'wrong');
-        a.setAttribute('aria-label', 'Card — hidden');
-        b.setAttribute('aria-label', 'Card — hidden');
-        if (!supportsFlip) {
-          [a, b].forEach(c => {
-            c.querySelector('.card-back').style.display = 'flex';
-            c.querySelector('.card-front').style.display = 'none';
-          });
-        }
-        flipped = [];
-        lockBoard = false;
-      }, 900);
-    }
+
+    }, 900);
   }
+}
 
   // ── End game ──────────────────────────────────────────────
   function endGame() {
+    if (isGameOver) return;
+    isGameOver = true;   
     stopTimer();
     saveBest(moves);
     updateBestDisplay();
+    winTitle.textContent = "🎉 ชนะแล้ว!"; // รีเซ็ตหัวข้อให้สอดคล้องกับชัยชนะ
     winDetail.textContent = `เวลา ${timer} วินาที · ${moves} ครั้ง · ${gridPairs} คู่`;
     winMsg.classList.add('show');
     winMsg.focus();
+    winMsg.classList.remove('lose');
+    winMsg.classList.add('win');
   }
 
+  function gameOver() {
+  lockBoard = true;
+  isGameOver = true;
+
+  winTitle.textContent = "⛔ Game Over"; // ⭐ เพิ่มบรรทัดนี้
+  winDetail.textContent = "หมดเวลา! ลองใหม่อีกครั้ง";
+
+  winMsg.classList.add('show');
+  winMsg.focus();
+
+  winMsg.classList.remove('win');
+  winMsg.classList.add('lose');
+}
   // ── Difficulty buttons ────────────────────────────────────
   document.querySelectorAll('[data-size]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -246,12 +318,27 @@
       btn.setAttribute('aria-pressed', 'true');
 
       const s = parseInt(btn.dataset.size);
-      if (s === 4) { gridCols = 4; gridPairs = 8; }
-      if (s === 3) { gridCols = 4; gridPairs = 6; }
-      if (s === 2) { gridCols = 4; gridPairs = 4; }
-      initGame();
-    });
-  });
+      if (s === 4) { 
+        gridCols = 4; 
+        gridPairs = 8; 
+        maxTime = 90;
+      }
+
+      if (s === 3) { 
+        gridCols = 4; 
+        gridPairs = 6; 
+        maxTime = 60;
+      }
+
+      if (s === 2) { 
+        gridCols = 4; 
+        gridPairs = 4; 
+        maxTime = 30;
+      }
+        timer = maxTime;
+        initGame();
+      });
+     });
 
   // ── Restart button ────────────────────────────────────────
   document.getElementById('restartBtn').addEventListener('click', initGame);
@@ -287,5 +374,6 @@
 
   // ── Start! ────────────────────────────────────────────────
   initGame();
+  winTitle.textContent = "🎉 ชนะแล้ว!";
 
 })();
